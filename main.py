@@ -57,11 +57,17 @@ MAX_CHARS = 200
 LINE = "My GPS sighed and said, 'Have you considered staying home?'"
 
 
+def check_length(text):
+    """Revision (Pass 3): length check split out of check_gate so the
+    gate rule is reviewed in two messages; behaviour unchanged."""
+    if not (1 <= len(text) <= MAX_CHARS):
+        raise ValueError("entry must be 1-200 characters, got %d" % len(text))
+
+
 def check_gate(text):
     """Mirror the sealed gate: 1-200 chars, UTF-8, not only whitespace,
     single line."""
-    if not (1 <= len(text) <= MAX_CHARS):
-        raise ValueError("entry must be 1-200 characters, got %d" % len(text))
+    check_length(text)
     if not text.strip():
         raise ValueError("entry must not be only whitespace")
     if "\n" in text or "\r" in text:
